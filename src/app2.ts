@@ -23,7 +23,7 @@ class App {
         var engine = new Engine(canvas, true);
         var scene = new Scene(engine)
 
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 3, Vector3.Zero(), scene);
+        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, -4, Vector3.Zero(), scene);
         camera.attachControl(canvas, true);
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
@@ -50,7 +50,8 @@ class App {
 
         monkey.setVerticesData(BABYLON.VertexBuffer.ColorKind, colors);*/
 
-        var sphere = MeshBuilder.CreateSphere("sphere", {diameter:10, updatable: true}, scene);
+        var sphere = MeshBuilder.CreateSphere("sphere", {diameter:1, updatable: true}, scene);
+        sphere.position = new Vector3(1, 0, 0);
 
         //If no colors add colors to sphere
         var colors = sphere.getVerticesData(VertexBuffer.ColorKind);
