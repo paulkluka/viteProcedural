@@ -3,7 +3,7 @@ import "@babylonjs/inspector";
 import { AdvancedDynamicTexture, Slider, TextBlock, Control } from "@babylonjs/gui";
 import { NodeGeometry } from "@babylonjs/core/Meshes/Node/nodeGeometry";
 import "@babylonjs/node-geometry-editor";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, VertexBuffer, StandardMaterial, Color3, Material, VertexData } from "@babylonjs/core";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, VertexBuffer, StandardMaterial, Color3, Material, VertexData, AssetsManager, TextFileAssetTask } from "@babylonjs/core";
 
 class App {
     private nodeGeometry: NodeGeometry | null = null;
@@ -32,28 +32,59 @@ class App {
         // Load Node Geometry from your NGE snippet
         setTimeout(async () => {
             try {
-                this.nodeGeometry = await NodeGeometry.ParseFromSnippetAsync("#V0P165", "", scene);
-                console.log("NodeGeometry loaded successfully");
+                // Create an instance of the AssetsManager
+                const assetsManager = new AssetsManager(scene);
 
-                // Access and modify specific inputs (blocks) in the node geometry
-                this.widthBlock = this.nodeGeometry.getBlockByName("chair_width");
-                console.log("Width block:", this.widthBlock);
-                
-                if (this.widthBlock) {
-                    this.widthBlock.value = 0.5;  // Set initial width value
-                    console.log("Initial width value set to:", this.widthBlock.value);
-                }
+                // Add a TextFileAssetTask to load the JSON file
+                const jsonTask = assetsManager.addTextFileTask("chairNgeTask", "chair-nge.json");
 
-                // Build the mesh from the node geometry
-                this.nodeGeometry.build();
-                this.mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+                // On success, parse the JSON and create the NodeGeometry
+                jsonTask.onSuccess = (task) => {
+                    const jsonData = JSON.parse(task.text);
+                    this.nodeGeometry = NodeGeometry.Parse(jsonData, scene);
+                    console.log(this.nodeGeometry);
+                    console.log(jsonData);
+                    //console.log("NodeGeometry loaded successfully from JSON");
 
-                // Position the mesh in the scene
-                if (this.mesh) {
-                    this.mesh.position = new Vector3(0, 0, 0);
-                }
+                    // Access and modify specific inputs (blocks) in the node geometry
+                    this.widthBlock = this.nodeGeometry.getBlockByName("chair_width");
+                    console.log("Width block:", this.widthBlock);
+
+                    if (this.widthBlock) {
+                        this.widthBlock.value = 0.5;  // Set initial width value
+                        console.log("Initial width value set to:", this.widthBlock.value);
+                    }
+
+                    // Build the mesh from the node geometry
+                    this.nodeGeometry.build();
+                    console.log(this.nodeGeometry);
+                    this.mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+                    console.log(this.mesh);
+                    this.nodeGeometry.updateMesh(this.mesh);
+                    this.nodeGeometry.edit;
+
+                    // Position the mesh in the scene
+                    if (this.mesh) {
+                        this.mesh.position = new Vector3(0, 0, 0);
+                        scene.addMesh(this.mesh);
+                    }
+
+                    if (this.mesh && !this.mesh.material) {
+                        const defaultMaterial = new StandardMaterial("defaultMat", scene);
+                        defaultMaterial.diffuseColor = new Color3(1, 0, 0); // Bright red
+                        this.mesh.material = defaultMaterial;
+                    }
+                };
+
+                // On error, log the error
+                jsonTask.onError = (task, message, exception) => {
+                    console.error("Error loading NodeGeometry from JSON:", message, exception);
+                };
+
+                // Load the assets
+                assetsManager.load();
             } catch (error) {
-                console.error("Error loading NodeGeometry:", error);
+                console.error("Error setting up AssetManager:", error);
             }
         });
 
@@ -115,10 +146,15 @@ class App {
             }
         });
 
-        // run the main render loop
-        engine.runRenderLoop(() => {
-            scene.render();
-        });
+        // Delay the start of the render loop by 3 seconds
+        setTimeout(() => {
+            // run the main render loop
+            engine.runRenderLoop(() => {
+                scene.render();
+            });
+        }, 1000); // 1000 milliseconds = 3 seconds
     }
 }
+// This line creates a new instance of the App class, which initializes the 3D scene
+// with a canvas, camera, lights, GUI controls and starts the render loop
 new App();
