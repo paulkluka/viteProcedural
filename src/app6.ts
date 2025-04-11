@@ -55,13 +55,24 @@ class App {
                         console.log("Initial width value set to:", this.widthBlock.value);
                     }
 
-                    // Build the mesh from the node geometry
-                    this.nodeGeometry.build();
-                    console.log(this.nodeGeometry);
-                    this.mesh = this.nodeGeometry.createMesh("MyNodeMesh");
-                    console.log(this.mesh);
-                    this.nodeGeometry.updateMesh(this.mesh);
-                    this.nodeGeometry.edit;
+//                  * NGE issue: https://playground.babylonjs.com/?BabylonToolkit#QG6YUM#13
+//                  * createMesh method doesn't generate the mesh
+//                  * created bjs forum post: https://forum.babylonjs.com/t/node-geometry-not-loaded-in-the-playground/57776
+//                  * solution! https://playground.babylonjs.com/?BabylonToolkit#QG6YUM#19
+
+//                  // Build the mesh from the node geometry
+//                  console.log(this.nodeGeometry);
+//                  this.mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+//                  this.nodeGeometry.build();
+//                      console.log(this.mesh);
+//                  this.nodeGeometry.updateMesh(this.mesh);
+//                  this.nodeGeometry.edit;
+
+                    // new solution: Build the mesh from the node geometry
+                    this.nodeGeometry.onBuildObservable.addOnce(() => { // Wait for build to finish, just in case
+                        const mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+                    });
+                    this.nodeGeometry.build(); // See doc here: "Please note that the geometry MAY not be ready until the onBuildObservable is raised."
 
                     // Position the mesh in the scene
                     if (this.mesh) {
