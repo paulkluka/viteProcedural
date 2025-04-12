@@ -9,6 +9,7 @@ class App {
     private nodeGeometry: NodeGeometry | null = null;
     private mesh: Mesh | null = null;
     private widthBlock: any = null;
+    private seatHeightBlock: any = null;
 
     constructor() {
         // create the canvas html element and attach it to the webpage
@@ -29,6 +30,9 @@ class App {
         camera.attachControl(canvas, true);
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
+        // Create a ground mesh
+        const ground = MeshBuilder.CreateGround("ground", {width: 2, height: 2}, scene);
+
         // Load Node Geometry from your NGE snippet
         setTimeout(async () => {
             try {
@@ -42,19 +46,6 @@ class App {
                 jsonTask.onSuccess = (task) => {
                     const jsonData = JSON.parse(task.text);
                     this.nodeGeometry = NodeGeometry.Parse(jsonData, scene);
-                    console.log(this.nodeGeometry);
-                    console.log(jsonData);
-                    //console.log("NodeGeometry loaded successfully from JSON");
-
-                    // Access and modify specific inputs (blocks) in the node geometry
-                    this.widthBlock = this.nodeGeometry.getBlockByName("chair_width");
-                    console.log("Width block:", this.widthBlock);
-
-                    if (this.widthBlock) {
-                        this.widthBlock.value = 0.5;  // Set initial width value
-                        console.log("Initial width value set to:", this.widthBlock.value);
-                    }
-
 //                  * NGE issue: https://playground.babylonjs.com/?BabylonToolkit#QG6YUM#13
 //                  * createMesh method doesn't generate the mesh
 //                  * created bjs forum post: https://forum.babylonjs.com/t/node-geometry-not-loaded-in-the-playground/57776
@@ -71,12 +62,29 @@ class App {
                     // new solution: Build the mesh from the node geometry
                     this.nodeGeometry.onBuildObservable.addOnce(() => { // Wait for build to finish, just in case
                         const mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+                        console.log(this.mesh);
                     });
-                    this.nodeGeometry.build(); // See doc here: "Please note that the geometry MAY not be ready until the onBuildObservable is raised."
+
+                    console.log(this.nodeGeometry);
+                    console.log("nge json: " + jsonData);
+                    console.log("NodeGeometry loaded successfully from JSON");
+
+                    // Access and modify specific inputs (blocks) in the node geometry
+                    this.widthBlock = this.nodeGeometry.getBlockByName("chair_width");
+                    console.log("Width block:", this.widthBlock);
+
+                    // Access and modify specific inputs (blocks) in the node geometry
+                    this.seatHeightBlock = this.nodeGeometry.getBlockByName("seat_height");
+                    console.log("seat height block:", this.seatHeightBlock);
+
+                    if (this.widthBlock) {
+                        this.widthBlock.value = 0.5;  // Set initial width value
+                        console.log("Initial width value set to:", this.widthBlock.value);
+                    }
 
                     // Position the mesh in the scene
                     if (this.mesh) {
-                        this.mesh.position = new Vector3(0, 0, 0);
+                        this.mesh.position = new Vector3(1, 0, 0);
                         scene.addMesh(this.mesh);
                     }
 
@@ -85,6 +93,8 @@ class App {
                         defaultMaterial.diffuseColor = new Color3(1, 0, 0); // Bright red
                         this.mesh.material = defaultMaterial;
                     }
+
+                    this.nodeGeometry.build(); // See doc here: "Please note that the geometry MAY not be ready until the onBuildObservable is raised."
                 };
 
                 // On error, log the error
@@ -103,42 +113,95 @@ class App {
         const advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
         // Create slider
-        const slider = new Slider();
-        slider.minimum = 0.1;
-        slider.maximum = 10;
-        slider.value = 0.5; // Initial value matching initial width
-        slider.height = "20px";
-        slider.width = "200px";
-        slider.color = "white";
-        slider.background = "black";
-        slider.top = "20px";
-        slider.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        slider.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        const slider0 = new Slider();
+        slider0.minimum = 0.1;
+        slider0.maximum = 2;
+        slider0.value = 0.5; // Initial value matching initial width
+        slider0.height = "20px";
+        slider0.width = "200px";
+        slider0.color = "white";
+        slider0.background = "black";
+        slider0.top = "20px";
+        slider0.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        slider0.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
         
         // Add value display text
-        const valueText = new TextBlock();
-        valueText.text = "Width: " + slider.value.toFixed(2);
-        valueText.color = "white";
-        valueText.height = "20px";
-        valueText.top = "40px";
-        valueText.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        valueText.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        const valueText0 = new TextBlock();
+        valueText0.text = "Width: " + slider0.value.toFixed(2);
+        valueText0.color = "white";
+        valueText0.height = "20px";
+        valueText0.top = "40px";
+        valueText0.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        valueText0.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
 
         // Add slider and text to screen
-        advancedTexture.addControl(slider);
-        advancedTexture.addControl(valueText);
+        advancedTexture.addControl(slider0);
+        advancedTexture.addControl(valueText0);
 
         // Update width when slider changes
-        slider.onValueChangedObservable.add((value) => {
-            if (this.widthBlock && this.nodeGeometry && this.mesh) {
+        slider0.onValueChangedObservable.add((value) => {
+            let name = scene.getMeshByName("MyNodeMesh");
+            name.dispose();
+            if (this.widthBlock && this.nodeGeometry ) {
+                this.nodeGeometry.onBuildObservable.addOnce(() => { // Wait for build to finish, just in case
+                    const mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+                });
                 console.log("Updating width to:", value);
                 this.widthBlock.value = value;
                 this.nodeGeometry.build(); // Rebuild the geometry
-                this.nodeGeometry.updateMesh(this.mesh);
-                valueText.text = "Width: " + value.toFixed(2);
+                //this.nodeGeometry.updateMesh(this.mesh);
+                valueText0.text = "Width: " + value.toFixed(2);
             } else {
                 console.log("Cannot update width - missing components:", {
                     widthBlock: !!this.widthBlock,
+                    nodeGeometry: !!this.nodeGeometry,
+                    mesh: !!this.mesh
+                });
+            }
+        });
+
+        // Create slider
+        const slider1 = new Slider();
+        slider1.minimum = 0.3;
+        slider1.maximum = 1;
+        slider1.value = 0.5; // Initial value matching initial width
+        slider1.height = "20px";
+        slider1.width = "200px";
+        slider1.color = "white";
+        slider1.background = "black";
+        slider1.top = "60px";
+        slider1.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        slider1.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+        
+        // Add value display text
+        const valueText1 = new TextBlock();
+        valueText1.text = "seat height: " + slider1.value.toFixed(2);
+        valueText1.color = "white";
+        valueText1.height = "20px";
+        valueText1.top = "20px";
+        valueText1.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        valueText1.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
+
+        // Add slider and text to screen
+        advancedTexture.addControl(slider1);
+        advancedTexture.addControl(valueText1);
+
+        // Update width when slider changes
+        slider1.onValueChangedObservable.add((value) => {
+            let name = scene.getMeshByName("MyNodeMesh");
+            name.dispose();
+            if (this.seatHeightBlock && this.nodeGeometry ) {
+                this.nodeGeometry.onBuildObservable.addOnce(() => { // Wait for build to finish, just in case
+                    const mesh = this.nodeGeometry.createMesh("MyNodeMesh");
+                });
+                console.log("Updating seat height to:", value);
+                this.seatHeightBlock.value = value;
+                this.nodeGeometry.build(); // Rebuild the geometry
+                //this.nodeGeometry.updateMesh(this.mesh);
+                valueText1.text = "seat height: " + value.toFixed(2);
+            } else {
+                console.log("Cannot update seat height - missing components:", {
+                    seatHeightBlock: !!this.seatHeightBlock,
                     nodeGeometry: !!this.nodeGeometry,
                     mesh: !!this.mesh
                 });
