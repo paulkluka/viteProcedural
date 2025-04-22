@@ -5,7 +5,7 @@ test vite + babylonjs project
 
 
 * vite / typscript / babylonjs project setup:
-    *** project setup method based on https://youtu.be/e6EkrLr8g_o?si=BAnYzl8-x41NhIZN&t=169:
+    * project setup method based on https://youtu.be/e6EkrLr8g_o?si=BAnYzl8-x41NhIZN&t=169:
         * install node.js
         * choose a local path example: /d/work/Projects/
             * open a bash terminal to that path
