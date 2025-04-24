@@ -277,6 +277,11 @@ class App {
 
 
 
+        //actively resize the canvas
+        window.addEventListener('resize', function() {
+            engine.resize()
+        });
+    
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I

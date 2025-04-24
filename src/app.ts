@@ -20,13 +20,13 @@ class App {
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
         var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
 
-	const sphere1 = sphere.clone();
-	sphere1.position.x = 1;
+        const sphere1 = sphere.clone();
+        sphere1.position.x = 1;
 
 
-        const box: Mesh = MeshBuilder.CreateBox("box", scene);
-	box.position.x = -1;
-	box.scaling.x = .5;
+            const box: Mesh = MeshBuilder.CreateBox("box", scene);
+        box.position.x = -1;
+        box.scaling.x = .5;
 
 
 
@@ -47,6 +47,13 @@ class App {
         engine.runRenderLoop(() => {
             scene.render();
         });
+
+        //actively resize the canvas
+        window.addEventListener('resize', function() {
+            engine.resize()
+        });
+    
+
     }
 }
 new App();
