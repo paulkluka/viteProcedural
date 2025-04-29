@@ -5,32 +5,26 @@ import { Engine, Scene, AxesViewer, ArcRotateCamera, Color4, Color3, Vector4, Ve
 
 class App {
     constructor() {
-        // create the canvas html element and attach it to the webpage
+// create the canvas html element and attach it to the webpage
         var canvas = document.createElement("canvas");
         canvas.style.width = "100%";
         canvas.style.height = "100%";
         canvas.id = "gameCanvas";
         document.body.appendChild(canvas);
 
-        // initialize babylon scene and engine
+// initialize babylon scene and engine
         var engine = new Engine(canvas, true);
         var scene = new Scene(engine);
 	scene.clearColor = new Color3( .4, .5, .5);
 
-        // Create camera with position (1, 1, 0) and target at origin
+// Create camera with position (1, 1, 0) and target at origin
         var camera: ArcRotateCamera = new ArcRotateCamera("Camera", 0, Math.PI / 2, 3, Vector3.Zero(), scene);
-        camera.position = new Vector3(0, 3, -0.1); // top view
-//      camera.position = new Vector3(0, 2, -2); // front/top view
+//      camera.position = new Vector3(0, 3, -0.1); // top view
+//      camera.position = new Vector3(0, 2, -2); // top view/front
+        camera.position = new Vector3(2, 2, -2); // side/top view/front
         camera.setTarget(Vector3.Zero());
         camera.attachControl(canvas, true);
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
-
-	var defaultGridMaterial = new GridMaterial("default", scene);
-	defaultGridMaterial.majorUnitFrequency = 5;
-	defaultGridMaterial.gridRatio = 0.5;
-
-        const c_ground = MeshBuilder.CreateGround("ground", {width: 2, height: 2}, scene);
-	c_ground.material = defaultGridMaterial;
 
 //      const c_box = MeshBuilder.CreateBox("Box", {size: 0.1}, scene)
 
@@ -51,25 +45,28 @@ class App {
 //      }
 //      c_box.setVerticesData(VertexBuffer.ColorKind, box_colors);
 
+// create l-shape sofa mesh
         //Shape profile in XY plane with offset
         const offset = new Vector3(-0.5, -0.5, 0);
         const myShape = [
             new Vector3(0, 0, 0).add(offset),
             new Vector3(1, 0, 0).add(offset),
-            new Vector3(1, 1, 0).add(offset),
+            new Vector3(1, 0.5, 0).add(offset),
+            new Vector3(0.5, 0.5, 0).add(offset),
             new Vector3(0.5, 1, 0).add(offset),
-            new Vector3(0.5, 1.5, 0).add(offset),
-            new Vector3(0, 1.5, 0).add(offset),
+            new Vector3(0, 1, 0).add(offset),
         ];
-
+	  
+	// path
         const myPath = [
             new Vector3(0, 0, 0),
             new Vector3(0, 0, 2),
-            new Vector3(0.25, 0, 2.5), //90 degree angle
+            new Vector3(0.35, 0, 2.6), //90 degree angle
             new Vector3(1, 0, 3),
             new Vector3(3, 0, 3),
         ];
 
+	// create the mesh
         const extrusion = MeshBuilder.ExtrudeShape("sofa", {shape: myShape, closeShape: true, path: myPath, cap: Mesh.CAP_ALL, sideOrientation: Mesh.DOUBLESIDE}, scene);		
 
         extrusion.scaling = new Vector3(0.25, 0.25, 0.25);
@@ -94,7 +91,7 @@ class App {
 
 //      extrusion.setVerticesData(VertexBuffer.ColorKind, ext_colors); 
 
-// show debug info:
+	// show debug info:
         extrusion.showBoundingBox = true;
 
 	// Create a material
@@ -118,6 +115,16 @@ class App {
         }
 
 
+// create wireframe ground
+	// material
+	var defaultGridMaterial = new GridMaterial("default", scene);
+	defaultGridMaterial.majorUnitFrequency = 5;
+	defaultGridMaterial.gridRatio = 0.5;
+	// object
+        const c_ground = MeshBuilder.CreateGround("ground", {width: 2, height: 2}, scene);
+	c_ground.material = defaultGridMaterial;
+
+
 // create axes display after the wireframe material
 	// https://doc.babylonjs.com/toolsAndResources/utilities/World_Axes/
 	// https://doc.babylonjs.com/typedoc/classes/BABYLON.Debug.AxesViewer
@@ -126,7 +133,7 @@ class App {
 	const c_Axes = new AxesViewer(scene, 0.5);
 
 
-        // hide/show the Inspector
+// hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
