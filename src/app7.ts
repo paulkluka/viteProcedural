@@ -1,7 +1,7 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import { GridMaterial } from '@babylonjs/materials/Grid';
-import { Engine, Scene, AxesViewer, ArcRotateCamera, Color4, Color3, Vector4, Vector3, HemisphericLight, Mesh, MeshBuilder, StandardMaterial, VertexBuffer, MeshDebugPluginMaterial, MeshDebugMode } from "@babylonjs/core";
+import { Engine, Scene, AxesViewer, ArcRotateCamera, Color4, Color3, Vector4, Vector3, HemisphericLight, Mesh, MeshBuilder, StandardMaterial, VertexBuffer, MeshDebugPluginMaterial, MeshDebugMode, DynamicTexture } from "@babylonjs/core";
 
 class App {
     constructor() {
@@ -72,6 +72,51 @@ class App {
         extrusion.scaling = new Vector3(0.25, 0.25, 0.25);
         extrusion.position = new Vector3(0.125, 0.125, 0);
 
+        // vertex id function: https://playground.babylonjs.com/#VKBJN#6
+        function makeTextPlane(text: string, color: string, size: number, scene: Scene) {
+            var dynamicTexture = new DynamicTexture("DynamicTexture", 50, scene, true);
+            dynamicTexture.hasAlpha = true;
+            dynamicTexture.drawText(text, 5, 40, "bold 36px Arial", color, "transparent", true);
+            var plane = MeshBuilder.CreatePlane("TextPlane_" + text, {size: size}, scene);
+            var mat = new StandardMaterial("TextPlaneMaterial_" + text, scene);
+            mat.backFaceCulling = true;
+            mat.specularColor = new Color3(0, 0, 0);
+            mat.emissiveColor = new Color3(1, 1, 1);
+            mat.diffuseTexture = dynamicTexture;
+            plane.material = mat;
+            return plane;
+        }
+
+        // Helper to compare positions with a tolerance for floating point errors
+        function arePositionsEqual(a: Vector3, b: Vector3, epsilon = 1e-6) {
+            return (
+                Math.abs(a.x - b.x) < epsilon &&
+                Math.abs(a.y - b.y) < epsilon &&
+                Math.abs(a.z - b.z) < epsilon
+            );
+        }
+
+        // Deduplicate positions
+        const positions = extrusion.getVerticesData(VertexBuffer.PositionKind);
+        const uniquePositions: Vector3[] = [];
+        if (positions) {
+            for (let i = 0; i < positions.length; i += 3) {
+                const pos = new Vector3(positions[i], positions[i+1], positions[i+2]);
+                if (!uniquePositions.some(existing => arePositionsEqual(existing, pos))) {
+                    uniquePositions.push(pos);
+                }
+            }
+        }
+
+        // Label only the unique corners
+        uniquePositions.forEach((pos, idx) => {
+            // Convert local position to global position
+            const globalPos = Vector3.TransformCoordinates(pos, extrusion.getWorldMatrix());
+            const textPlane = makeTextPlane(idx.toString(), "white", 0.1, scene);
+            textPlane.position = globalPos;
+            textPlane.billboardMode = 7;
+        });
+
 //      //If no colors add colors to sphere
 //      var ext_colors = extrusion.getVerticesData(VertexBuffer.ColorKind);
 //      if(!ext_colors) {
@@ -115,15 +160,24 @@ class App {
         }
 
 
-// create wireframe ground
-	// material
+// create wireframe grid
+	// option 1: material
 	var defaultGridMaterial = new GridMaterial("default", scene);
 	defaultGridMaterial.majorUnitFrequency = 5;
 	defaultGridMaterial.gridRatio = 0.5;
-	// object
-        const c_ground = MeshBuilder.CreateGround("ground", {width: 2, height: 2}, scene);
-	c_ground.material = defaultGridMaterial;
 
+	// option 2: Create a wireframe material
+        const wireframeMaterial = new StandardMaterial("wireframeMaterial", scene);
+        wireframeMaterial.wireframe = true; // Enable wireframe mode
+
+	// object
+        const c_grid = MeshBuilder.CreateGround("grid", {width: 2, height: 2, subdivisions: 4}, scene);
+	//c_grid.material = defaultGridMaterial; // option 1
+	c_grid.material = wireframeMaterial; // option 2
+
+        // create a unit box to validate the grid sizing
+        //const c_cube = MeshBuilder.CreateBox("cube");
+        //c_cube.material = wireframeMaterial; // assign wireframeMaterial if needed
 
 // create axes display after the wireframe material
 	// https://doc.babylonjs.com/toolsAndResources/utilities/World_Axes/
@@ -133,6 +187,11 @@ class App {
 	const c_Axes = new AxesViewer(scene, 0.5);
 
 
+// enable inspector by default
+	scene.debugLayer.show({
+		embedMode:true
+	});
+	  
 // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
@@ -163,4 +222,5 @@ class App {
 
     }
 }
+
 new App();
