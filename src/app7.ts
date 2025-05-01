@@ -87,6 +87,10 @@ class App {
             return plane;
         }
 
+	// to get the global coordinate of the vertex position later in the code, computeWorldMatrix has to be done first
+	// https://forum.babylonjs.com/t/how-to-get-global-coordinates-of-mesh-vertices/43036
+	extrusion.computeWorldMatrix(true);
+
         // Helper to compare positions with a tolerance for floating point errors
         function arePositionsEqual(a: Vector3, b: Vector3, epsilon = 1e-6) {
             return (
