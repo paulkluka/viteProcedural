@@ -2,6 +2,7 @@ import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import { GridMaterial } from '@babylonjs/materials/Grid';
 import { Engine, Scene, AxesViewer, ArcRotateCamera, Color4, Color3, Vector4, Vector3, HemisphericLight, Mesh, MeshBuilder, StandardMaterial, VertexBuffer, MeshDebugPluginMaterial, MeshDebugMode, DynamicTexture } from "@babylonjs/core";
+import { Abstract01 } from "./assets/Abstract01";
 
 class App {
     constructor() {
@@ -149,6 +150,20 @@ class App {
         sofaMaterial.specularColor = new Color3(0.1, 0.1, 0.1);
 //      sofaMaterial.wireframe = true; // Enable wireframe mode
         extrusion.material = sofaMaterial;
+
+// import props from external scripts
+	const c_abstract01 = Abstract01.createAbstract(scene);
+	//c_abstract01.position = new Vector3(1, 0, -1);
+	c_abstract01.position.x = 0.5;
+	c_abstract01.position.z = -0.5;
+
+
+
+
+
+
+
+
 
 // Enable wireframe debug display on all meshes
         // Modify mesh's geometry to prepare for TRIANGLES mode in plugin
