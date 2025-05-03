@@ -23,7 +23,7 @@ class App {
 //      camera.position = new Vector3(0, 3, -0.1); // top view
         camera.position = new Vector3(0, 2, -2); // top view/front
 //      camera.position = new Vector3(2, 2, -2); // side/top view/front
-        camera.setTarget(Vector3.Zero());
+        camera.setTarget(new Vector3(0, 0.3, 0));
         camera.attachControl(canvas, true);
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
