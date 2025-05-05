@@ -1,5 +1,5 @@
 // create an abstract prop
-import { Scene, MeshBuilder, Mesh, Vector3, Curve3 } from "@babylonjs/core";
+import { Scene, MeshBuilder, Mesh, Color3, Vector3, Curve3, StandardMaterial, Texture } from "@babylonjs/core";
 
 // create the class
 export class Abstract01 {
@@ -10,9 +10,9 @@ export class Abstract01 {
         	const c_baseHeight = 0.5;
         	const c_baseGroundSnap = (c_baseSize * 0.5) * c_baseHeight;
         	// base mesh creation using the parameters
-        	const box = MeshBuilder.CreateBox("base", { size: c_baseSize }, scene);
-        	box.scaling = new Vector3(1, c_baseHeight, 1);
-        	box.position = new Vector3(0, c_baseGroundSnap, 0);
+        	const c_base = MeshBuilder.CreateBox("base", { size: c_baseSize }, scene);
+        	c_base.scaling = new Vector3(1, c_baseHeight, 1);
+        	c_base.position = new Vector3(0, c_baseGroundSnap, 0);
         	console.log(c_baseGroundSnap);
 
         	// extruded shape
@@ -63,8 +63,20 @@ export class Abstract01 {
 		c_extruded.rotation.x = -Math.PI/2;//rotate 90 degree upright on x
 		c_extruded.scaling = new Vector3(c_xtsize, c_xtsize, c_xtsize);
 		c_extruded.position = new Vector3(-0.07, 0.26, 0);
+
+
+// final touch
+		// merge meshes
+		// https://doc.babylonjs.com/features/featuresDeepDive/mesh/mergeMeshes/
+		// https://playground.babylonjs.com/#INZ0Z0#5
+		const c_mesh = Mesh.MergeMeshes([c_base, c_extruded])
+		c_mesh.bakeCurrentTransformIntoVertices()//reset the transform
+
+		const c_mesh_mat = new StandardMaterial("c_mesh_mat", scene)
+		c_mesh_mat.diffuseTexture = new Texture("https://www.babylonjs-playground.com/textures/lava/lavatile.jpg");
+		c_mesh_mat.diffuseColor = new Color3(0.5, 0.7, 0.7)
+		c_mesh.material = c_mesh_mat
 		
-        	//return box; // for the purpose of using a variable to capture the output of this class
-		return c_extruded;
+        	return c_mesh; // for the purpose of using a variable to capture the output of this class
 	}
 }
