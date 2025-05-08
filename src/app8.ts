@@ -25,6 +25,7 @@ class App {
 //      camera.position = new Vector3(2, 2, -2); // side/top view/front
         camera.setTarget(new Vector3(0, 0.3, 0));
         camera.attachControl(canvas, true);
+	camera.wheelPrecision = 30; // Set zoom sensitivity, Higher = slower zoom (default is 3) 
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
 
