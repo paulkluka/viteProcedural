@@ -1,50 +1,44 @@
-# ll-vite-bjs-test
-test vite + babylonjs project
-
-
-
-
-* vite / typscript / babylonjs project setup:
-    * project setup method based on:
+* vite / typscript / babylonjs project setup info:
+    * project setup method is based on:
         * https://doc.babylonjs.com/guidedLearning/usingVite#maintenance-and-updates
             * this guide is for detail explanation of why using vite for setup and building the project
             * but the actual project setup follows the guide below: 
                 * https://youtu.be/e6EkrLr8g_o?si=BAnYzl8-x41NhIZN&t=169:
-                * this video does a better job of not duplicating the node module folder where the vite and bjs engine code is stored
-    * installation:
-        * prerequisite:
-            * install node.js to have npm if you don't have it already
-            * install git as well
-        * choose a local work path example: /d/work/Projects/ (windows-> d:\work\Projects\)
-            * open a bash terminal to that path, or use any other git clone method of your choice
-            * git clone https://github.com/LLVir/ll-vite-bjs-test.git
-            * install vite project files in the repo: 
-                * npm create vite@latest
-                    * for the project name, choose the git repo name that we just cloned: ll-vite-bjs-test
-                    * choose the project types:
-                        * vanilla
-                        * typescript
-            * install vite build tools:
-                * cd into the repo: example-> cd /d/work/Projects/ll-vite-bjs-test
-                * npm install
-                    * will add a node_modules folder and put the build tools there
-            * install babylonjs inside the repo path: example-> /d/work/Projects/ll-vite-bjs-test
-                * npm i -D @babylonjs/core
-                * npm i -D @babylonjs/inspector (other babylonjs modules)
-                    * this will add the packages into the node_modules folder
-                    * for other bjs modules check out this url for the names: https://doc.babylonjs.com/setup/frameworkPackages/npmSupport
-        * to run the web server: 
-            * type the this command at the base folder of the project -> npm run dev
-            * press h for help
-            * press o to launch a browser to preview the project
-                * this will run the index.html file, located in the base folder of the project, in your browser
+                * this video does a better job of not duplicating the node_module folder where the vite and bjs engine code is stored
 
-        * wip: explain index.html and app.ts
+* installation:
+    * prerequisite:
+        * install node.js to have npm if you don't have it already
+        * install git as well
+    * choose a local work path example: /d/work/Projects/ (windows-> d:\work\Projects\)
+        * open a bash terminal to that path, or use any other git clone method of your choice
+        * git clone https://github.com/LLVir/ll-vite-bjs-test.git
+        * install vite project files in the repo: 
+            * npm create vite@latest
+                * for the project name, choose the git repo name that we just cloned: ll-vite-bjs-test
+                * choose the project types:
+                    * vanilla
+                    * typescript
+        * install vite build tools:
+            * cd into the repo: example-> cd /d/work/Projects/ll-vite-bjs-test
+            * npm install
+                * will add a node_modules folder and put the build tools there
+        * install babylonjs inside the repo path: example-> /d/work/Projects/ll-vite-bjs-test
+            * npm i -D @babylonjs/core
+            * npm i -D @babylonjs/inspector (other babylonjs modules)
+                * this will add the packages into the node_modules folder
+                * for other bjs modules check out this url for the names: https://doc.babylonjs.com/setup/frameworkPackages/npmSupport
+    * to run the web server: 
+        * type the this command at the base folder of the project -> npm run dev
+        * press h for help
+        * press o to launch a browser to preview the project
+            * this will run the index.html file, located in the base folder of the project, in your browser
+
+    * wip: explain index.html and app.ts
 
 
 
-* notes:
-
+* development workflow:
     * the vite project setup is good for offline babylonjs development
         * you can use your favorite IDE/text editor (cursor, windsurf, vscode, vim, etc) to edit your code
         * you can ask the ai inside your code editor of choice to analyze your code base and produce code snippets for you
