@@ -4,6 +4,7 @@ import { GridMaterial } from '@babylonjs/materials/Grid';
 import { Engine, Scene, AxesViewer, ArcRotateCamera, Color4, Color3, Vector4, Vector3, HemisphericLight, Mesh, MeshBuilder, StandardMaterial, VertexBuffer, MeshDebugPluginMaterial, MeshDebugMode, DynamicTexture } from "@babylonjs/core";
 import { Cube01 } from "./assets/Cube01";
 import { Fa_Idle } from "./assets/Fa-Idle";
+import { Gallery_Small } from "./environments/Gallery_Small";
 
 class App {
     constructor() {
@@ -29,21 +30,27 @@ class App {
 	camera.wheelPrecision = 30; // Set zoom sensitivity, Higher = slower zoom (default is 3) 
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
-//
-//
-//
-//
-//
-//
-// put your model creation code below this line +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+/*
+|
+|
+|
+|
+V
+// put your model creation code below this line +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	
 	// create a cube mesh from external script: src/assets/cube01.ts
 	const c_cube = Cube01.CreateCube(scene);
 	console.log(c_cube.name);
 
 	// import a frame avatar mesh from external script: src/assets/fa-idle.ts
-	const c_fa_idle = Fa_Idle.FrameAvatarIdle(scene);
-	console.log(c_fa_idle);
+	Fa_Idle.FrameAvatarIdle(scene).then(c_fa_idle => {
+		console.log(c_fa_idle.name);
+	});
+
+	// import a gallery_small environment from external script: src/environment/gallery_small.ts
+	Gallery_Small.GallerySmall(scene).then(c_gallery_small => {
+		console.log(c_gallery_small.name);
+	});
 
 
 
@@ -51,14 +58,14 @@ class App {
 
 
 
-
-
-// end your model creation code above this line +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// 
-// 
-// 
-// 
-// 
+/* end your model creation code above this line +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+^
+|
+|
+|
+|
+|
+*/
  
 // Enable wireframe debug display on all meshes
         // Modify mesh's geometry to prepare for TRIANGLES mode in plugin
@@ -85,7 +92,8 @@ class App {
         wireframeMaterial.wireframe = true; // Enable wireframe mode
 
 	// object
-        const c_grid = MeshBuilder.CreateGround("grid", {width: 2, height: 2, subdivisions: 4}, scene);
+	const c_grid_size = 10
+        const c_grid = MeshBuilder.CreateGround("grid", {width: c_grid_size, height: c_grid_size, subdivisions: c_grid_size * 2}, scene);
 	//c_grid.material = defaultGridMaterial; // option 1
 	c_grid.material = wireframeMaterial; // option 2
 
