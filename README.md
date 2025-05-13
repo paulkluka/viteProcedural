@@ -52,20 +52,37 @@
         * similar to working with the frame code
         * can modularize useful code snippets into classes and extend them into other files
             * bjs playground is more of a single self-contained file - not very good for write once and reuse the code somewhere else
-        * can take advantage of git branches and PRs
-        * to avoid some of git workflow pitfalls in the beginning:
-            * for anyone that had cloned the project to their local computer and wants to start working
-                * create a git branch with your name and the date of the branch creation, and push the branch to the remote github repo like so:
-                    * git checkout -b larry-20250508
-                    * git push origin larry-20250508
-            * create a folder with your name under the base folder of the project
-            * do all your coding/testing/git-push/pull inside your folder and branch, which would be independent from other collaborators
+        * use git branch early in the process to work independently and avoid conflicts
+            * git clone the project to your local computer
+            * create a git branch with your name and the date of the branch creation, and push the branch to the remote github repo like so:
+                * git checkout -b larry-20250508
+                * git push origin larry-20250508
+            * the remote repo now has your branch and is tracked to the local branch that is under your name
+            * try to add and modify your own files rather than modifying existing files that you got from the main branch
+                * this would allow changes in the main branch to have an easier time to merge into your own branch if you want to get updates from it
+            * do all your coding/testing/git-push/pull inside your branch, which would be independent from other collaborators
         * should you ever want to review and incorporate other people's contributions:
             * you can git pull, git checkout their branch, copy their code snippets
             * switch back to your branch and paste the code into your work for testing
             * commit your new work back into your branch and push
         * for features that are deemed beneficial to the whole team and are worthy of pushing to the main branch:
-            * push your work into your branch first
+            * like a procedural asset that everyone uses as reference or a utility/function that everyone needed to use
+            * make sure you have committed and pushed your work into your branch first
+
+
+
+        # Make sure you're on the target branch
+        git checkout target-branch
+
+        # Checkout specific file(s) from the source branch
+        git checkout source-branch -- path/to/file1 path/to/file2
+
+        # Then commit the changes
+        git commit -m "Merged specific files from source-branch"
+
+
+
+
             * duplicate only the files that are yours and that you want to incorporate as a PR to be merged into main
             * git pull - to get the latest update first and avoid merge conflicts later
             * git checkout main (to switch to the main branch)
