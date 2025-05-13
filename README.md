@@ -1,4 +1,4 @@
-* vite / typscript / babylonjs project setup info:
+* **vite / typscript / babylonjs project setup info:**
     * project setup method is based on:
         * https://doc.babylonjs.com/guidedLearning/usingVite#maintenance-and-updates
             * this guide is for detail explanation of why using vite for setup and building the project
@@ -6,7 +6,7 @@
                 * https://youtu.be/e6EkrLr8g_o?si=BAnYzl8-x41NhIZN&t=169:
                 * this video does a better job of not duplicating the node_module folder where the vite and bjs engine code is stored
 
-* installation:
+* **installation:**
     * prerequisite:
         * install node.js to have npm if you don't have it already
         * install git as well
@@ -38,7 +38,7 @@
 
 
 
-* development workflow:
+* **development workflow:**
     * the vite project setup is good for offline babylonjs development
         * you can use your favorite IDE/text editor (cursor, windsurf, vscode, vim, etc) to edit your code
         * you can ask the ai inside your code editor of choice to analyze your code base and produce code snippets for you
@@ -68,31 +68,5 @@
         * for features that are deemed beneficial to the whole team and are worthy of pushing to the main branch:
             * like a procedural asset that everyone uses as reference or a utility/function that everyone needed to use
             * make sure you have committed and pushed your work into your branch first
+            * **this portion of the doc will be updated when info is available**
 
-
-
-        # Make sure you're on the target branch
-        git checkout target-branch
-
-        # Checkout specific file(s) from the source branch
-        git checkout source-branch -- path/to/file1 path/to/file2
-
-        # Then commit the changes
-        git commit -m "Merged specific files from source-branch"
-
-
-
-
-            * duplicate only the files that are yours and that you want to incorporate as a PR to be merged into main
-            * git pull - to get the latest update first and avoid merge conflicts later
-            * git checkout main (to switch to the main branch)
-            * move those duplicate files outside of your own named folder and put them in the right project location (example: vite-bjs-project/src/)
-            * update and test your file path references to make sure the new files work with the existing project
-            * create a PR branch for the changes: 
-                * PR naming suggestion: add 'PR' prefix followed by your name, date, and description if needed
-                    * example: git checkout -b PR-larry-20250508-add-debug-feature
-                    * git add <your new files>
-                    * git commit
-                    * git push upstream the PR branch
-            * create a PR tracker on github.com with select reviewers and notify the person(s) for review
-            * reviewer can approve and merge the changes into the main branch for future git pulls to the project
