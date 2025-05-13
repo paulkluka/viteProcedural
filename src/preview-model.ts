@@ -30,13 +30,13 @@ class App {
 	camera.wheelPrecision = 30; // Set zoom sensitivity, Higher = slower zoom (default is 3) 
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
 
-/*
-|
-|
-|
-|
-V
-// put your model creation code below this line +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+
+
+/*\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+put your model creation code below this line \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\*/
 	
 	// create a cube mesh from external script: src/assets/cube01.ts
 	const c_cube = Cube01.CreateCube(scene);
@@ -58,15 +58,15 @@ V
 
 
 
-/* end your model creation code above this line +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-^
-|
-|
-|
-|
-|
-*/
+/* end your model creation code above this line ///////////////////////////////////////////////////////////////////
+//////////////////////////////////////
+//////////////////////
+///////////*/
  
+
+
+
+
 // Enable wireframe debug display on all meshes
         // Modify mesh's geometry to prepare for TRIANGLES mode in plugin
         for (const mesh of scene.meshes) {
