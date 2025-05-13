@@ -68,5 +68,31 @@
         * for features that are deemed beneficial to the whole team and are worthy of pushing to the main branch:
             * like a procedural asset that everyone uses as reference or a utility/function that everyone needed to use
             * make sure you have committed and pushed your work into your branch first
-            * **this portion of the doc will be updated when info is available**
 
+
+*wip
+        # Make sure you're on the target branch
+        git checkout target-branch
+
+        # Checkout specific file(s) from the source branch
+        git checkout source-branch -- path/to/file1 path/to/file2
+
+        # Then commit the changes
+        git commit -m "Merged specific files from source-branch"
+
+
+
+
+            * duplicate only the files that are yours and that you want to incorporate as a PR to be merged into main
+            * git pull - to get the latest update first and avoid merge conflicts later
+            * git checkout main (to switch to the main branch)
+            * move those duplicate files outside of your own named folder and put them in the right project location (example: vite-bjs-project/src/)
+            * update and test your file path references to make sure the new files work with the existing project
+            * create a PR branch for the changes: 
+                * PR naming suggestion: add 'PR' prefix followed by your name, date, and description if needed
+                    * example: git checkout -b PR-larry-20250508-add-debug-feature
+                    * git add <your new files>
+                    * git commit
+                    * git push upstream the PR branch
+            * create a PR tracker on github.com with select reviewers and notify the person(s) for review
+            * reviewer can approve and merge the changes into the main branch for future git pulls to the project
