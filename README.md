@@ -13,7 +13,6 @@
         * install git as well
     * choose a local work path example: /d/work/Projects/ (windows-> d:\work\Projects\)
         * open a bash terminal to that path, or use any other git clone method of your choice
-        * git clone https://github.com/LLVir/ll-vite-bjs-test.git
         * install vite project files in the repo: 
             * npm create vite@latest
                 * for the project name, choose the git repo name that we just cloned: ll-vite-bjs-test
@@ -21,29 +20,32 @@
                     * vanilla
                     * typescript
         * install vite build tools:
-            * cd into the repo: example-> cd /d/work/Projects/ll-vite-bjs-test
+            * cd into the repo: example-> cd /d/work/Projects/bjs-vite-procedural-environment
             * npm install
                 * will add a node_modules folder and put the build tools there
-        * install babylonjs inside the repo path: example-> /d/work/Projects/ll-vite-bjs-test
+        * install babylonjs inside the repo path: example-> /d/work/Projects/bjs-vite-procedural-environment
             * npm i -D @babylonjs/core
             * npm i -D @babylonjs/inspector (other babylonjs modules)
                 * this will add the packages into the node_modules folder
                 * for other bjs modules check out this url for the names: https://doc.babylonjs.com/setup/frameworkPackages/npmSupport
+        * git clone the remote repo to this project 
+            * git clone https://github.com/LLVir/bjs-vite-procedural-environment
     * to run the web server: 
+        * recommend to open a new bash/terminal/cmd
         * type the this command at the base folder of the project -> npm run dev
-        * press h for help
+        * once started, press h for help
         * press o to launch a browser to preview the project
             * this will run the index.html file, located in the base folder of the project, in your browser
 
 * **project structure:** 
-    * this repo is in early development and the files listed below will be subjected to improvements and changes over time
+    * this repo is in early development and the files listed below will be subjected to improvements and changes over time if needed
     * as mentioned, the project setup is geared towards procedural modeling using babylonjs framework
-    * the project code listed below is structured to provide an environment to preview the results the procedural modeling code
-        * it offers a way to write the modeling code in their own modularized fashion (separate files) that can be combined or ported to other projects
+    * the project code listed below is structured to provide a environment for previewing the procedural modeling as you are developing it
+        * it offers the structure to write code in a modularized fashion (separate files) that can be combined or ported to other bjs projects
         * separate from the engine initiation and other auxiliary code that helps you visualize your creation, but has nothing to do with the creation itself
     * index.html
         * this is the file the browser loads when you do a npm run dev to start a local server
-        * this file will load the preview-model.ts starter script
+        * this file will load the preview-model.ts starter script in the src folder
             * you may change the code here to start your own script
     * src/preview-model.ts
         * similar to the stuff you would write in the bjs playground
@@ -63,6 +65,10 @@
         * fa-idle.ts - if you need a Frame avatar for scale reference, you can call this script inside the preview-model.ts
         * abstract01.ts - this is a script that creates an abstract prop
             * you can follow the code here to create your own procedural modeling script that can be referenced into other scripts
+    * public/*.glb *.png etc
+        * the vite project considers images and 3d models as external public assets 
+        * place your image textures and 3d models inside this folder
+        * scripts that imports model and image files will be sourcing from this folder
 
 
 * **development workflow:**
