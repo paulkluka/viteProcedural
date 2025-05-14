@@ -1,18 +1,19 @@
 * **vite / typscript / babylonjs project setup info:**
-    * the goal of this project setup is allow for procedural modeling using babylonjs scripts
+    * the goal of this project setup is to allow for procedural modeling using babylonjs scripts
     * project setup method is based on:
         * https://doc.babylonjs.com/guidedLearning/usingVite#maintenance-and-updates
-            * this guide is for detail explanation of why using vite for setup and building the project
+            * this guide offers detail explanation of using vite to setup and build projects
             * but the actual project setup follows the guide below: 
                 * https://youtu.be/e6EkrLr8g_o?si=BAnYzl8-x41NhIZN&t=169:
-                * this video does a better job of not duplicating the node_module folder where the vite and bjs engine code is stored
+                * this video does a better job of not duplicating the node_modules folder where the vite and bjs engine code is stored
 
 * **installation:**
     * this process is written for working on the windows platform
     * prerequisite:
         * install node.js to have npm if you don't have it already
         * install git as well
-    * for first time installation choose a local work path example: /d/work/Projects/ (windows-> d:\work\Projects\)
+    * first time installation - choose a local work path
+        * example: /d/work/Projects/ (windows-> d:\work\Projects\)
         * open a git bash terminal to that path, or use the bash terminal in your ide (vscode, cursor, etc) and git clone the remote repo
             * command: git clone https://github.com/LLVir/bjs-vite-procedural-environment.git
             * this will create the local repo at: (example) /d/work/projects/bjs-vite-procedural-environment
@@ -27,7 +28,7 @@
                     * typescript
         * install vite build tools:
             * cd into the repo 
-                * command: cd /d/work/Projects/bjs-vite-procedural-environment
+                * command: cd bjs-vite-procedural-environment
             * add a node_modules folder and put the build tools there
                 * command: npm install
         * install babylonjs engine inside the repo path: example-> /d/work/Projects/bjs-vite-procedural-environment
@@ -37,10 +38,14 @@
                 * for other bjs modules check out this url for the names: https://doc.babylonjs.com/setup/frameworkPackages/npmSupport
         * to get back the git managed index.html that was overwritten by the vite project installation
             * command: git restore .
-        * to start your project with a new branch under your name - note: replace yourname with your own name!
-            * command: git checkout -b yourname
+        * start your project with a new branch under your name (avoid conflicts with other collaborators work later on) 
+            * note: you only need to do this once
+            * note: replace yourname with your own name below!
+                * command: git checkout -b yourname
+            * add your branch to the remote repo
+                * command: git push origin yourname
     * to run the vite dev server: 
-        * type the this command at the base folder of the project
+        * type the this command at the base folder of the project (inside bjs-vite-procedural-environment)
             * command: npm run dev
         * once started, press h for help
         * press o to launch a browser to preview the project
@@ -85,6 +90,12 @@
         * the vite project considers images and 3d models as external public assets 
         * place your image textures and 3d models inside this folder
         * scripts that imports model and image files will be sourcing from this folder
+    * node_modules/*
+        * all of vite and babylonjs engine package files are here
+        * you don't normally have to touch the files here other than using npm to update or download packages
+        * don't add these files to your git project
+        * the hidden folder .vite is in here should you ever need to clear out the vite cache files
+        * when you import a specific babylonjs module into your script, you are calling the classes that are inside this folder
 
 
 * **development workflow:**
@@ -97,26 +108,18 @@
         * see the update in the browser
         * rinse and repeat
     * team collaboration using git
-        * use git to push and share your code on the github repo with the rest of the team
-        * similar to working with the frame code
-        * can modularize useful code snippets into classes and reference them in other files
-            * bjs playground is more of a single self-contained file - not very good for write once and reuse the code somewhere else
         * use git branch early in the process to work independently and avoid conflicts
-            * git clone the project to your local computer
-            * create a git branch with your name and the date of the branch creation, and push the branch to the remote github repo like so:
-                * git checkout -b larry-20250508
-                * git push origin larry-20250508
-            * the remote repo now has your branch and is tracked to the local branch that is under your name
-            * try to add and modify your own files rather than modifying existing files that you got from the main branch
+            * this process is described in installation notes above
+            * try to add and modify your own files rather than modifying existing files that comes with the initial git clone of the repo
                 * this would allow changes in the main branch to have an easier time to merge into your own branch if you want to get updates from it
             * do all your coding/testing/git-push/pull inside your branch, which would be independent from other collaborators
         * should you ever want to review and incorporate other people's contributions:
             * you can git pull, git checkout their branch, copy their code snippets
             * switch back to your branch and paste the code into your work for testing
             * commit your new work back into your branch and push
-        * for features that are deemed beneficial to the whole team and are worthy of pushing to the main branch:
-            * like a procedural asset that everyone uses as reference or a utility/function that everyone needed to use
-            * make sure you have committed and pushed your work into your branch first then go through the steps below:
+        * git pull request: for features that are deemed beneficial to the whole team and are worthy of pushing to the main branch:
+            * examples: procedural assets that everyone uses as reference or utilities/functions that everyone needed to use
+            * before going through the steps below make sure you have committed and pushed your work into your branch first:
             * step1:
                 * switch to main:
                     * command: git checkout main 
@@ -124,11 +127,12 @@
                     * command: git pull origin main
             * step2:
                 * create a new PR branch off main:
-                    * use a PR- prefix follow by your name and date and description
-                        * example: git checkout -b PR-larry-20250513-feature-update
+                    * use a PR- prefix follow by date, your name and description
+                        * command example: git checkout -b PR-20250513-yourname-feature-update
+                    * this would help branch display a little bit more organized
             * step3:
                 * copy only specific files from your own branch to this new PR branch:
-                    * example: git checkout larry-20250508 -- path/to/file.ts
+                    * example: git checkout yourname -- path/to/file.ts
             * step4:
                 * git add the new files 
                 * commit and push upstream to the remote repo
@@ -141,5 +145,3 @@
                 * write a description
                 * create pull request
                 * notify the reviewer for review
-
-
