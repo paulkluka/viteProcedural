@@ -1,4 +1,5 @@
 * **vite / typscript / babylonjs project setup info:**
+    * the goal of this project setup is allow for procedural modeling using babylonjs scripts
     * project setup method is based on:
         * https://doc.babylonjs.com/guidedLearning/usingVite#maintenance-and-updates
             * this guide is for detail explanation of why using vite for setup and building the project
@@ -34,8 +35,34 @@
         * press o to launch a browser to preview the project
             * this will run the index.html file, located in the base folder of the project, in your browser
 
-    * wip: explain index.html and app.ts
-
+* **project structure:** 
+    * this repo is in early development and the files listed below will be subjected to improvements and changes over time
+    * as mentioned, the project setup is geared towards procedural modeling using babylonjs framework
+    * the project code listed below is structured to provide an environment to preview the results the procedural modeling code
+        * it offers a way to write the modeling code in their own modularized fashion (separate files) that can be combined or ported to other projects
+        * separate from the engine initiation and other auxiliary code that helps you visualize your creation, but has nothing to do with the creation itself
+    * index.html
+        * this is the file the browser loads when you do a npm run dev to start a local server
+        * this file will load the preview-model.ts starter script
+            * you may change the code here to start your own script
+    * src/preview-model.ts
+        * similar to the stuff you would write in the bjs playground
+        * but for our purpose, this script serve to preview our procedural modeling scripts
+        * this file starts the babylonjs engine and setup up the camera and lights
+        * it contains code to show the inspector
+        * adds some helper objects to visualize the scene (grid, axis, wireframe display)
+        * here you can call in your own modularized procedural modeling scripts
+    * src/environments/*.ts
+        * this is a place for scripts that imports an environment glb file as a reference for your procedural modeling creation 
+        * gallery_small.ts provides an environment that is ported from FrameVR for scale reference
+        * feel free to put your own procedural environment scripts here
+    * src/assets/*.ts
+        * this is a place for your procedural modeling scripts
+        * cube01.ts - this simple script calls the bjs MeshBuilder class to make a unit cube, but later position it on the ground with the pivot set to the bottom face of the cube
+            * you can change the l_cubeSize variable to resize the cube upon creation
+        * fa-idle.ts - if you need a Frame avatar for scale reference, you can call this script inside the preview-model.ts
+        * abstract01.ts - this is a script that creates an abstract prop
+            * you can follow the code here to create your own procedural modeling script that can be referenced into other scripts
 
 
 * **development workflow:**
@@ -47,10 +74,10 @@
         * save the file
         * see the update in the browser
         * rinse and repeat
-    * team collaboration: this works with the git workflow mentality
-        * use git to push and share your code on a github repo with the rest of the team
+    * team collaboration using git
+        * use git to push and share your code on the github repo with the rest of the team
         * similar to working with the frame code
-        * can modularize useful code snippets into classes and extend them into other files
+        * can modularize useful code snippets into classes and reference them in other files
             * bjs playground is more of a single self-contained file - not very good for write once and reuse the code somewhere else
         * use git branch early in the process to work independently and avoid conflicts
             * git clone the project to your local computer
@@ -67,6 +94,30 @@
             * commit your new work back into your branch and push
         * for features that are deemed beneficial to the whole team and are worthy of pushing to the main branch:
             * like a procedural asset that everyone uses as reference or a utility/function that everyone needed to use
-            * make sure you have committed and pushed your work into your branch first
-            * **this portion of the doc will be updated when info is available**
+            * make sure you have committed and pushed your work into your branch first then go through the steps below:
+            * step1:
+                * switch to main:
+                    * command: git checkout main 
+                * get the latest updates from the remote main branch:
+                    * command: git pull origin main
+            * step2:
+                * create a new PR branch off main:
+                    * use a PR- prefix follow by your name and date and description
+                        * example: git checkout -b PR-larry-20250513-feature-update
+            * step3:
+                * copy only specific files from your own branch to this new PR branch:
+                    * example: git checkout larry-20250508 -- path/to/file.ts
+            * step4:
+                * git add the new files 
+                * commit and push upstream to the remote repo
+            * step5:
+                * go to https://github.com/LLVir/bjs-vite-procedural-environment
+                * find your PR branch near the top of the page
+                * do a compare & pull request
+                * ensure your PR is set to merge into main
+                * set the reviewer
+                * write a description
+                * create pull request
+                * notify the reviewer for review
+
 
