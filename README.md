@@ -8,34 +8,50 @@
                 * this video does a better job of not duplicating the node_module folder where the vite and bjs engine code is stored
 
 * **installation:**
+    * this process is written for working on the windows platform
     * prerequisite:
         * install node.js to have npm if you don't have it already
         * install git as well
-    * choose a local work path example: /d/work/Projects/ (windows-> d:\work\Projects\)
-        * open a bash terminal to that path, or use any other git clone method of your choice
+    * for first time installation choose a local work path example: /d/work/Projects/ (windows-> d:\work\Projects\)
+        * open a git bash terminal to that path, or use the bash terminal in your ide (vscode, cursor, etc) and git clone the remote repo
+            * command: git clone https://github.com/LLVir/bjs-vite-procedural-environment.git
+            * this will create the local repo at: (example) /d/work/projects/bjs-vite-procedural-environment
         * install vite project files in the repo: 
-            * npm create vite@latest
+            * command: npm create vite@latest
                 * for the project name, choose the git repo name that we just cloned: bjs-vite-procedural-environment
+                * if vite respond with: 
+                    * Target directory "bjs-vite-procedural-environment" is not empty. Please choose how to proceed:
+                    * choose -> Ignore files and continue
                 * choose the project types:
                     * vanilla
                     * typescript
         * install vite build tools:
-            * cd into the repo: example-> cd /d/work/Projects/bjs-vite-procedural-environment
-            * npm install
-                * will add a node_modules folder and put the build tools there
-        * install babylonjs inside the repo path: example-> /d/work/Projects/bjs-vite-procedural-environment
-            * npm i -D @babylonjs/core
-            * npm i -D @babylonjs/inspector (other babylonjs modules)
+            * cd into the repo 
+                * command: cd /d/work/Projects/bjs-vite-procedural-environment
+            * add a node_modules folder and put the build tools there
+                * command: npm install
+        * install babylonjs engine inside the repo path: example-> /d/work/Projects/bjs-vite-procedural-environment
+            * command: npm i -D @babylonjs/core
+            * command: npm i -D @babylonjs/inspector (other babylonjs modules)
                 * this will add the packages into the node_modules folder
                 * for other bjs modules check out this url for the names: https://doc.babylonjs.com/setup/frameworkPackages/npmSupport
-        * git clone the remote repo to this project 
-            * git clone https://github.com/LLVir/bjs-vite-procedural-environment
-    * to run the web server: 
-        * recommend to open a new bash/terminal/cmd
-        * type the this command at the base folder of the project -> npm run dev
+        * to get back the git managed index.html that was overwritten by the vite project installation
+            * command: git restore .
+        * to start your project with a new branch under your name - note: replace yourname with your own name!
+            * command: git checkout -b yourname
+    * to run the vite dev server: 
+        * type the this command at the base folder of the project
+            * command: npm run dev
         * once started, press h for help
         * press o to launch a browser to preview the project
-            * this will run the index.html file, located in the base folder of the project, in your browser
+            * this will run the index.html file that is located in the base folder of the project
+    * vite troubleshoot server launch errors:
+        * complain if the .ts file specified in the index.html exist
+            * press q to shutdown the server and npm run dev to start it up again 
+        * complain that it can't remove some node_modules/.vite/deps folder 
+            * you can manually open that location and remove the folder in question
+            * shutdown the server and restart it
+
 
 * **project structure:** 
     * this repo is in early development and the files listed below will be subjected to improvements and changes over time if needed
