@@ -15,7 +15,7 @@
         * open a bash terminal to that path, or use any other git clone method of your choice
         * install vite project files in the repo: 
             * npm create vite@latest
-                * for the project name, choose the git repo name that we just cloned: ll-vite-bjs-test
+                * for the project name, choose the git repo name that we just cloned: bjs-vite-procedural-environment
                 * choose the project types:
                     * vanilla
                     * typescript
